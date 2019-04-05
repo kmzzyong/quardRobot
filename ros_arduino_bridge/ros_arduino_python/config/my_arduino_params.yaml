@@ -1,0 +1,63 @@
+# For a direct USB cable connection, the port name is typically
+# /dev/ttyACM# where is # is a number such as 0, 1, 2, etc
+# For a wireless connection like XBee, the port is typically
+# /dev/ttyUSB# where # is a number such as 0, 1, 2, etc.
+
+port: /dev/ttyACM0
+baud: 57600
+timeout: 0.5
+
+rate: 50
+sensorstate_rate: 10
+
+use_base_controller: True
+base_controller_rate: 10
+
+# For a robot that uses base_footprint, change base_frame to base_footprint
+base_frame: base_footprint
+
+# === Robot drivetrain parameters
+wheel_diameter: 0.068
+wheel_track: 0.198
+encoder_resolution: 22 
+gear_reduction: 30
+motors_reversed: False
+
+# === PID parameters
+Aleft_Kp: 20
+Aleft_Kd: 12
+Aleft_Ki: 0
+Aleft_Ko: 50
+
+Aright_Kp: 20
+Aright_Kd: 12
+Aright_Ki: 0
+Aright_Ko: 50
+
+Bleft_Kp: 20
+Bleft_Kd: 12
+Bleft_Ki: 0
+Bleft_Ko: 50
+
+Bright_Kp: 20
+Bright_Kd: 12
+Bright_Ki: 0
+Bright_Ko: 50
+accel_limit: 1.0
+
+# === Sensor definitions.  Examples only - edit for your robot.
+#     Sensor type can be one of the follow (case sensitive!):
+#	  * Ping
+#	  * GP2D12
+#	  * Analog
+#	  * Digital
+#	  * PololuMotorCurrent
+#	  * PhidgetsVoltage
+#	  * PhidgetsCurrent (20 Amp, DC)
+sensors: {
+  #motor_current_left:   {pin: 0, type: PololuMotorCurrent, rate: 5},
+  #motor_current_right:  {pin: 1, type: PololuMotorCurrent, rate: 5},
+  #ir_front_center:      {pin: 2, type: GP2D12, rate: 10},
+  #sonar_front_center:   {pin: 5, type: Ping, rate: 10},
+  arduino_led:          {pin: 13, type: Digital, rate: 5, direction: output}
+}
