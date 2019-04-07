@@ -11,8 +11,5 @@
 
     <!-- startup rplidar node -->
     <include file="$(find rplidar_ros)/launch/rplidar.launch" />
-
-    <!-- startup move_base node -->
-    <!--<include file="$(find navigation)/launch/move_base.launch" />-->
-  
+ 
 </launch>
