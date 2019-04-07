@@ -6,7 +6,7 @@
     <include file="$(find ros_arduino_python)/launch/arduino.launch" />
 
    
-    <!-- startup rplidar node 10  -->
+    <!-- startup rplidar node -->
     <include file="$(find rplidar_ros)/launch/rplidar.launch" />
  
 </launch>
