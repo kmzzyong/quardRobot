@@ -43,7 +43,7 @@ Bright_Kp: 30
 Bright_Kd: 40
 Bright_Ki: 0
 Bright_Ko: 50
-accel_limit: 1.5
+accel_limit: 1.0
 
 # === Sensor definitions.  Examples only - edit for your robot.
 #     Sensor type can be one of the follow (case sensitive!):
