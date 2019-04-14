@@ -24,12 +24,12 @@ gear_reduction: 30
 motors_reversed: False
 
 # === PID parameters
-Aleft_Kp: 20
+Aleft_Kp: 10
 Aleft_Kd: 12
 Aleft_Ki: 0
 Aleft_Ko: 50
 
-Aright_Kp: 20
+Aright_Kp: 10
 Aright_Kd: 12
 Aright_Ki: 0
 Aright_Ko: 50
