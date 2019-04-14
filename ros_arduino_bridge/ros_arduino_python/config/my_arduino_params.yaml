@@ -24,26 +24,26 @@ gear_reduction: 30
 motors_reversed: False
 
 # === PID parameters
-Aleft_Kp: 15
-Aleft_Kd: 30
+Aleft_Kp: 25
+Aleft_Kd: 40
 Aleft_Ki: 0
 Aleft_Ko: 50
 
-Aright_Kp: 15
-Aright_Kd: 30
+Aright_Kp: 25
+Aright_Kd: 40
 Aright_Ki: 0
 Aright_Ko: 50
 
-Bleft_Kp: 20
-Bleft_Kd: 30
+Bleft_Kp: 30
+Bleft_Kd: 40
 Bleft_Ki: 0
 Bleft_Ko: 50
 
-Bright_Kp: 20
-Bright_Kd: 30
+Bright_Kp: 30
+Bright_Kd: 40
 Bright_Ki: 0
 Bright_Ko: 50
-accel_limit: 1.0
+accel_limit: 1.5
 
 # === Sensor definitions.  Examples only - edit for your robot.
 #     Sensor type can be one of the follow (case sensitive!):
