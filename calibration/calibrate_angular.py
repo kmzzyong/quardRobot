@@ -21,9 +21,8 @@ class CalibrateAngular():
         r = rospy.Rate(self.rate)
 
         # The test angle is 360 degrees
-        self.test_angle = 2*pi #这里注意，在ROS中使用的弧度，不能直接写360
-
-        self.speed = 0.1 # radians per second
+        self.test_angle = 2*pi
+        self.speed = 0.03 # radians per second
         self.tolerance = 1 # degrees converted to radians
         self.odom_angular_scale_correction = 1
         self.start_test = True
@@ -32,7 +31,7 @@ class CalibrateAngular():
         self.cmd_vel = rospy.Publisher('/cmd_vel', Twist, queue_size=5)
 
         # The base frame is usually base_link or base_footprint
-        self.base_frame = rospy.get_param('~base_frame', '/base_link')
+        self.base_frame = rospy.get_param('~base_frame', '/base_footprint')
 
         # The odom frame is usually just /odom
         self.odom_frame = rospy.get_param('~odom_frame', '/odom')

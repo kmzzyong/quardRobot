@@ -17,7 +17,7 @@ class CalibrateLinear():
 
         # Set the distance to travel
         self.test_distance = 1.0 # meters
-        self.speed = 1.0 # meters per second
+        self.speed = 0.2 # meters per second
         self.tolerance = 0.01 # meters
         self.odom_linear_scale_correction = 1.0
         self.start_test = True
@@ -26,7 +26,7 @@ class CalibrateLinear():
         self.cmd_vel = rospy.Publisher('/cmd_vel', Twist, queue_size=5)
 
         # The base frame is base_footprint for the TurtleBot but base_link for Pi Robot
-        self.base_frame = rospy.get_param('~base_frame', '/base_link')
+        self.base_frame = rospy.get_param('~base_frame', '/base_footprint')
 
         # The odom frame is usually just /odom
         self.odom_frame = rospy.get_param('~odom_frame', '/odom')
