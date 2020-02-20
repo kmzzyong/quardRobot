@@ -5,7 +5,9 @@
     <!-- startup mobilebase arduino launch -->
     <include file="$(find ros_arduino_python)/launch/arduino.launch" />
 
-   
+    <!-- transform between /odom and /odom_combined -->
+    <node pkg="tf" type="static_transform_publisher" name="odom_combined_broadcaster" args="0 0 0 0 0 0 /odom /odom_combined 100" />
+
     <!-- startup rplidar node -->
     <include file="$(find rplidar_ros)/launch/rplidar.launch" />
  
