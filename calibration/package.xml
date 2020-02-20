@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <name>calibration</name>
+  <version>0.0.0</version>
+  <description>The calibration package</description>
+  <license>BSD</license>
+  <maintainer email="namniart@gmail.com">Austin Hendrix</maintainer>
+
+  <author>Graylin Trevor Jay</author>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>tf</run_depend>
+
+
+</package>
