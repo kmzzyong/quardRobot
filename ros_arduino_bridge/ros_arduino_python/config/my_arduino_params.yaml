@@ -21,26 +21,26 @@ wheel_diameter: 0.07
 wheel_track: 0.198
 encoder_resolution: 22 
 gear_reduction: 30
-motors_reversed: False
+motors_reversed: false
 
 # === PID parameters
-Aleft_Kp: 10
-Aleft_Kd: 30
+Aleft_Kp: 25
+Aleft_Kd: 200
 Aleft_Ki: 0
 Aleft_Ko: 50
 
-Aright_Kp: 10
-Aright_Kd: 30
+Aright_Kp: 25
+Aright_Kd: 200
 Aright_Ki: 0
 Aright_Ko: 50
 
-Bleft_Kp: 13
-Bleft_Kd: 30
+Bleft_Kp: 40
+Bleft_Kd: 220
 Bleft_Ki: 0
 Bleft_Ko: 50
 
-Bright_Kp: 13
-Bright_Kd: 30
+Bright_Kp: 40
+Bright_Kd: 200
 Bright_Ki: 0
 Bright_Ko: 50
 accel_limit: 1.0
