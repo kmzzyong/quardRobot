@@ -9,4 +9,6 @@
     <include file="$(find rplidar_ros)/launch/rplidar.launch" />
     <node name="base2laser" pkg="tf" type="static_transform_publisher" args="-0.10 0 0.15 0 0 0 1 /base_footprint /laser 50"/>
 
+    <include file="$(find raspicam_node)/launch/camerav2_1280x960.launch"/>
+
 </launch>
