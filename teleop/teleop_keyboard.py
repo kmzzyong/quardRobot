@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 
-import roslib; roslib.load_manifest('teleop_twist_keyboard')
+import roslib; roslib.load_manifest('teleop_keyboard')
 import rospy
 
 from geometry_msgs.msg import Twist
@@ -82,7 +82,7 @@ if __name__=="__main__":
     rospy.init_node('teleop_twist_keyboard')
 
     speed = rospy.get_param("~speed", 0.2)
-    turn = rospy.get_param("~turn", 0.1)
+    turn = rospy.get_param("~turn", 0.05)
     x = 0
     y = 0
     z = 0

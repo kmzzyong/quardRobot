@@ -4,17 +4,17 @@ Generic Keyboard Teleop for ROS
 # Launch
 Run.
 ```
-rosrun teleop_twist_keyboard teleop_twist_keyboard.py
+rosrun teleop teleop_keyboard.py
 ```
 
 With custom values.
 ```
-rosrun teleop_twist_keyboard teleop_twist_keyboard.py _speed:=0.9 _turn:=0.8
+rosrun teleop teleop_keyboard.py _speed:=0.9 _turn:=0.8
 ```
 
 Publishing to a different topic (in this case `my_cmd_vel`).
 ```
-rosrun teleop_twist_keyboard teleop_twist_keyboard.py cmd_vel:=my_cmd_vel
+rosrun teleop teleop_keyboard.py cmd_vel:=my_cmd_vel
 ```
 
 # Usage
