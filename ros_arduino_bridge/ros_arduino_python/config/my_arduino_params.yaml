@@ -24,23 +24,23 @@ gear_reduction: 30
 motors_reversed: false
 
 # === PID parameters
-Aleft_Kp: 25
-Aleft_Kd: 200
+Aleft_Kp: 16
+Aleft_Kd: 120
 Aleft_Ki: 0
 Aleft_Ko: 50
 
-Aright_Kp: 25
-Aright_Kd: 200
+Aright_Kp: 16
+Aright_Kd: 120
 Aright_Ki: 0
 Aright_Ko: 50
 
-Bleft_Kp: 40
-Bleft_Kd: 220
+Bleft_Kp: 16
+Bleft_Kd: 120
 Bleft_Ki: 0
 Bleft_Ko: 50
 
-Bright_Kp: 40
-Bright_Kd: 200
+Bright_Kp: 16
+Bright_Kd: 120
 Bright_Ki: 0
 Bright_Ko: 50
 accel_limit: 1.0

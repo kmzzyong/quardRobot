@@ -37,10 +37,12 @@ class BaseController:
         self.name = name
         self.base_frame = base_frame
         self.rate = float(rospy.get_param("~base_controller_rate", 10))
-        self.timeout = rospy.get_param("~base_controller_timeout", 1.0)
+        self.timeout = rospy.get_param("~base_controller_timeout", 0.7)
         self.stopped = False
         self.debugPID=True
-                 
+        self.odom_angular_scale_correction=1.85
+        self.odom_linear_scale_correction = 1
+ 
         pid_params = dict()
         pid_params['wheel_diameter'] = rospy.get_param("~wheel_diameter", "") 
         pid_params['wheel_track'] = rospy.get_param("~wheel_track", "")
@@ -63,7 +65,7 @@ class BaseController:
         pid_params['Bright_Ki'] = rospy.get_param("~Bright_Ki", 0)
         pid_params['Bright_Ko'] = rospy.get_param("~Bright_Ko", 50)
         
-        self.accel_limit = rospy.get_param('~accel_limit', 0.1)
+        self.accel_limit = rospy.get_param('~accel_limit', 1)
         self.motors_reversed = rospy.get_param("~motors_reversed", False)
         
         if self.debugPID:
@@ -84,7 +86,7 @@ class BaseController:
         self.setup_pid(pid_params)
             
         # How many encoder ticks are there per meter?
-        self.ticks_per_meter = self.encoder_resolution * self.gear_reduction  / (self.wheel_diameter * pi)
+        self.ticks_per_meter = self.encoder_resolution * self.gear_reduction  / (self.wheel_diameter * pi) / self.odom_linear_scale_correction 
         
         # What is the maximum acceleration we will tolerate when changing wheel speeds?
         self.max_accel = self.accel_limit * self.ticks_per_meter / self.rate
@@ -217,8 +219,8 @@ class BaseController:
                 dBright = (Bright_enc - self.enc_Bright) / self.ticks_per_meter
                 dBleft = (Bleft_enc - self.enc_Bleft) / self.ticks_per_meter
 
-            dright=(dAright+dBright)/2.0
-            dleft=(dAleft+dBleft)/2.0
+            dright=dAright
+            dleft=dAleft
 
             self.enc_Aright = Aright_enc
             self.enc_Aleft = Aleft_enc
@@ -226,7 +228,7 @@ class BaseController:
             self.enc_Bleft = Bleft_enc
             
             dxy_ave = (dright + dleft) / 2.0
-            dth = (dright - dleft) / self.wheel_track
+            dth = (dright - dleft) / self.wheel_track / self.odom_angular_scale_correction
             vxy = dxy_ave / dt
             vth = dth / dt
                 
@@ -244,6 +246,9 @@ class BaseController:
             quaternion.y = 0.0
             quaternion.z = sin(self.th / 2.0)
             quaternion.w = cos(self.th / 2.0)
+           # quaternion = createQuaternionMsgFromRollPitchYaw(0,0,self.th)
+
+
     
             # Create the odometry transform frame broadcaster.
             self.odomBroadcaster.sendTransform(
@@ -334,7 +339,7 @@ class BaseController:
 
         if x == 0:
             # Turn in place
-            Aright = th * self.wheel_track  * self.gear_reduction / 2.0
+            Aright = th * self.wheel_track * self.gear_reduction / 2.0
             Bright=Aright
             Aleft = -Aright
             Bleft=Aleft
@@ -344,14 +349,14 @@ class BaseController:
             Bleft = Bright = x
         else:
             # Rotation about a point in space
-            Aleft = x - th * self.wheel_track  * self.gear_reduction / 2.0
+            Aleft = x - th * self.wheel_track * self.gear_reduction / 2.0
             Bleft=Aleft
-            Aright = x + th * self.wheel_track  * self.gear_reduction / 2.0
+            Aright = x + th * self.wheel_track * self.gear_reduction / 2.0
             Bright=Aright
             
         self.v_des_Aleft = int(Aleft * self.ticks_per_meter / self.arduino.PID_RATE)
         self.v_des_Aright = int(Aright * self.ticks_per_meter / self.arduino.PID_RATE)
-        self.v_des_Bleft=int(Bleft * self.ticks_per_meter / self.arduino.PID_RATE) 
+        self.v_des_Bleft=int(Bleft * self.ticks_per_meter / self.arduino.PID_RATE)
         self.v_des_Bright=int(Bright * self.ticks_per_meter / self.arduino.PID_RATE)
         
 
