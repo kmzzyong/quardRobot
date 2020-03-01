@@ -86,8 +86,8 @@ class BaseController:
         self.setup_pid(pid_params)
             
         # How many encoder ticks are there per meter?
-        self.ticks_per_meter = self.encoder_resolution * self.gear_reduction  / (self.wheel_diameter * pi) / self.odom_linear_scale_correction 
-        
+        self.ticks_per_meter = self.encoder_resolution * self.gear_reduction  / (self.wheel_diameter * pi) 
+        self.ticks_per_meter= self.ticks_per_meter / self.linear_scale_correction
         # What is the maximum acceleration we will tolerate when changing wheel speeds?
         self.max_accel = self.accel_limit * self.ticks_per_meter / self.rate
                 
@@ -146,7 +146,10 @@ class BaseController:
             os._exit(1)
                 
         self.wheel_diameter = pid_params['wheel_diameter']
+        #scale wheel_track
         self.wheel_track = pid_params['wheel_track']
+        self.wheel_track = self.wheel_track / self.odom_angular_scale_correction
+        
         self.encoder_resolution = pid_params['encoder_resolution']
         self.gear_reduction = pid_params['gear_reduction']
         
@@ -228,7 +231,7 @@ class BaseController:
             self.enc_Bleft = Bleft_enc
             
             dxy_ave = (dright + dleft) / 2.0
-            dth = (dright - dleft) / self.wheel_track / self.odom_angular_scale_correction
+            dth = (dright - dleft) / self.wheel_track 
             vxy = dxy_ave / dt
             vth = dth / dt
                 
@@ -339,7 +342,7 @@ class BaseController:
 
         if x == 0:
             # Turn in place
-            Aright = th * self.wheel_track * self.gear_reduction / 2.0
+            Aright = th * self.wheel_track / 2.0
             Bright=Aright
             Aleft = -Aright
             Bleft=Aleft
@@ -349,9 +352,9 @@ class BaseController:
             Bleft = Bright = x
         else:
             # Rotation about a point in space
-            Aleft = x - th * self.wheel_track * self.gear_reduction / 2.0
+            Aleft = x - th * self.wheel_track  / 2.0
             Bleft=Aleft
-            Aright = x + th * self.wheel_track * self.gear_reduction / 2.0
+            Aright = x + th * self.wheel_track  / 2.0
             Bright=Aright
             
         self.v_des_Aleft = int(Aleft * self.ticks_per_meter / self.arduino.PID_RATE)
