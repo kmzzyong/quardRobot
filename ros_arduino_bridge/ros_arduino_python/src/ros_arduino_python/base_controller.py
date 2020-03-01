@@ -148,7 +148,7 @@ class BaseController:
         self.wheel_diameter = pid_params['wheel_diameter']
         #scale wheel_track
         self.wheel_track = pid_params['wheel_track']
-        self.wheel_track = self.wheel_track / self.odom_angular_scale_correction
+        #self.wheel_track = self.wheel_track / self.odom_angular_scale_correction
         
         self.encoder_resolution = pid_params['encoder_resolution']
         self.gear_reduction = pid_params['gear_reduction']
@@ -231,7 +231,7 @@ class BaseController:
             self.enc_Bleft = Bleft_enc
             
             dxy_ave = (dright + dleft) / 2.0
-            dth = (dright - dleft) / self.wheel_track 
+            dth = (dright - dleft) / self.wheel_track / self.odom_angular_scale_correction
             vxy = dxy_ave / dt
             vth = dth / dt
                 
