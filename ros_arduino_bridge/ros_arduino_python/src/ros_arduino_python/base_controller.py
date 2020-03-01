@@ -342,7 +342,7 @@ class BaseController:
 
         if x == 0:
             # Turn in place
-            Aright = th * self.wheel_track *3 / 2.0
+            Aright = th * self.wheel_track *10 / 2.0
             Bright=Aright
             Aleft = -Aright
             Bleft=Aleft
@@ -352,9 +352,9 @@ class BaseController:
             Bleft = Bright = x
         else:
             # Rotation about a point in space
-            Aleft = x - th * self.wheel_track * 3  / 2.0
+            Aleft = x - th * self.wheel_track * 10  / 2.0
             Bleft=Aleft
-            Aright = x + th * self.wheel_track * 3 / 2.0
+            Aright = x + th * self.wheel_track * 10 / 2.0
             Bright=Aright
             
         self.v_des_Aleft = int(Aleft * self.ticks_per_meter / self.arduino.PID_RATE)
