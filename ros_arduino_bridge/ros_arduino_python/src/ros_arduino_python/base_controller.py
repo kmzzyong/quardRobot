@@ -41,7 +41,7 @@ class BaseController:
         self.stopped = False
         self.debugPID=True
         self.odom_angular_scale_correction=1.85
-        self.odom_linear_scale_correction = 1
+        self.odom_linear_scale_correction = 1.01
  
         pid_params = dict()
         pid_params['wheel_diameter'] = rospy.get_param("~wheel_diameter", "") 
@@ -87,7 +87,7 @@ class BaseController:
             
         # How many encoder ticks are there per meter?
         self.ticks_per_meter = self.encoder_resolution * self.gear_reduction  / (self.wheel_diameter * pi) 
-        self.ticks_per_meter= self.ticks_per_meter / self.linear_scale_correction
+        self.ticks_per_meter= self.ticks_per_meter / self.odom_linear_scale_correction
         # What is the maximum acceleration we will tolerate when changing wheel speeds?
         self.max_accel = self.accel_limit * self.ticks_per_meter / self.rate
                 
