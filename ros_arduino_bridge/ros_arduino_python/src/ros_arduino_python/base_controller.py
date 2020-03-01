@@ -37,7 +37,7 @@ class BaseController:
         self.name = name
         self.base_frame = base_frame
         self.rate = float(rospy.get_param("~base_controller_rate", 10))
-        self.timeout = rospy.get_param("~base_controller_timeout", 0.7)
+        self.timeout = rospy.get_param("~base_controller_timeout", 0.2)
         self.stopped = False
         self.debugPID=True
         self.odom_angular_scale_correction=1.85
