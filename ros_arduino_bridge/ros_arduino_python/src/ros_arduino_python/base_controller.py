@@ -37,15 +37,16 @@ class BaseController:
         self.name = name
         self.base_frame = base_frame
         self.rate = float(rospy.get_param("~base_controller_rate", 10))
-        self.timeout = rospy.get_param("~base_controller_timeout", 0.7)
+        self.timeout = rospy.get_param("~base_controller_timeout", 0.3)
         self.stopped = False
         self.debugPID=True
-        self.odom_angular_scale_correction=1.9
+        self.odom_angular_scale_correction=2
         self.odom_linear_scale_correction = 1.01
  
         pid_params = dict()
         pid_params['wheel_diameter'] = rospy.get_param("~wheel_diameter", "") 
         pid_params['wheel_track'] = rospy.get_param("~wheel_track", "")
+        pid_params['wheel_base'] = rospy.get_param("~wheel_base", "")
         pid_params['encoder_resolution'] = rospy.get_param("~encoder_resolution", "") 
         pid_params['gear_reduction'] = rospy.get_param("~gear_reduction", 1.0)
         pid_params['Aleft_Kp'] = rospy.get_param("~Aleft_Kp", 20)
@@ -149,7 +150,8 @@ class BaseController:
         #scale wheel_track
         self.wheel_track = pid_params['wheel_track']
         #self.wheel_track = self.wheel_track / self.odom_angular_scale_correction
-        
+        self.wheel_base = pid_params['wheel_base']
+
         self.encoder_resolution = pid_params['encoder_resolution']
         self.gear_reduction = pid_params['gear_reduction']
         
@@ -222,19 +224,27 @@ class BaseController:
                 dBright = (Bright_enc - self.enc_Bright) / self.ticks_per_meter
                 dBleft = (Bleft_enc - self.enc_Bleft) / self.ticks_per_meter
 
-            dright=dAright
-            dleft=dAleft
+            #dright=dAright
+            #dleft=dAleft
 
             self.enc_Aright = Aright_enc
             self.enc_Aleft = Aleft_enc
             self.enc_Bright = Bright_enc
             self.enc_Bleft = Bleft_enc
             
-            dxy_ave = (dright + dleft) / 2.0
-            dth = (dright - dleft) / self.wheel_track / self.odom_angular_scale_correction
-            vxy = dxy_ave / dt
+            #dxy_ave = (dright + dleft) / 2.0
+            #dth = (dright - dleft) / self.wheel_track / self.odom_angular_scale_correction
+            #vxy = dxy_ave / dt
+            #vth = dth / dt
+            dx = (dAleft + dAright) / 2.0
+            dy = (dAright + dBright) / 2.0
+            dxy_ave = (dx ** 2 + dy ** 2) ** 0.5
+            dth = (dAright - dBleft) / (self.wheel_track + self.wheel_base)
+            vx = dx / dt
+            vy = dy / dt
             vth = dth / dt
-                
+            
+
             if (dxy_ave != 0):
                 dx = cos(dth) * dxy_ave
                 dy = -sin(dth) * dxy_ave
@@ -270,8 +280,8 @@ class BaseController:
             odom.pose.pose.position.y = self.y
             odom.pose.pose.position.z = 0
             odom.pose.pose.orientation = quaternion
-            odom.twist.twist.linear.x = vxy
-            odom.twist.twist.linear.y = 0
+            odom.twist.twist.linear.x = vx
+            odom.twist.twist.linear.y = vy
             odom.twist.twist.angular.z = vth
 
             self.odomPub.publish(odom)
@@ -338,25 +348,21 @@ class BaseController:
         self.last_cmd_vel = rospy.Time.now()
         
         x = req.linear.x         # m/s
+        y = req.linear.y
         th = req.angular.z       # rad/s
 
-        if x == 0:
-            # Turn in place
-            Aright = th * self.wheel_track * self.gear_reduction / 2.0
-            Bright=Aright
-            Aleft = -Aright
-            Bleft=Aleft
-        elif th == 0:
-            # Pure forward/backward motion
-            Aleft = Aright = x
-            Bleft = Bright = x
-        else:
-            # Rotation about a point in space
-            Aleft = x - th * self.wheel_track * self.gear_reduction  / 2.0
-            Bleft=Aleft
-            Aright = x + th * self.wheel_track * self.gear_reduction / 2.0
-            Bright=Aright
-            
+        # quard
+        #Aleft = x - th * self.wheel_track / 2.0 
+        #Bleft=Aleft
+        #Aright = x + th * self.wheel_track / 2.0
+        #Bright=Aright
+ 
+        #macknamu
+        Aleft = x - y - th * (self.wheel_track + self.wheel_base) / 2
+        Aright = x + y + th * (self.wheel_track + self.wheel_base) / 2
+        Bright = x - y + th * (self.wheel_track + self.wheel_base) / 2
+        Bleft = x + y - th * (self.wheel_track + self.wheel_base) / 2
+
         self.v_des_Aleft = int(Aleft * self.ticks_per_meter / self.arduino.PID_RATE)
         self.v_des_Aright = int(Aright * self.ticks_per_meter / self.arduino.PID_RATE)
         self.v_des_Bleft=int(Bleft * self.ticks_per_meter / self.arduino.PID_RATE)

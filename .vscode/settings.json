@@ -4,5 +4,6 @@
         "/opt/ros/kinetic/lib/python2.7/dist-packages",
         "/usr/local/spark/python",
         "/usr/local/spark/python/lib/py4j-0.10.7-src.zip"
-    ]
+    ],
+    "python.pythonPath": "/home/kmzzyong/.platformio/penv/bin/python"
 }

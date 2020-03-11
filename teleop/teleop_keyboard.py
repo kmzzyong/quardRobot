@@ -82,7 +82,7 @@ if __name__=="__main__":
     rospy.init_node('teleop_keyboard')
 
     speed = rospy.get_param("~speed", 0.2)
-    turn = rospy.get_param("~turn", 0.05)
+    turn = rospy.get_param("~turn", 1)
     x = 0
     y = 0
     z = 0
