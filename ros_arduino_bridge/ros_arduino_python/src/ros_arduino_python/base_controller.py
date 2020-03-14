@@ -40,7 +40,7 @@ class BaseController:
         self.timeout = rospy.get_param("~base_controller_timeout", 0.3)
         self.stopped = False
         self.debugPID=True
-        self.odom_angular_scale_correction=2
+        self.odom_angular_scale_correction=1.06
         self.odom_linear_scale_correction = 1.01
  
         pid_params = dict()
@@ -149,7 +149,6 @@ class BaseController:
         self.wheel_diameter = pid_params['wheel_diameter']
         #scale wheel_track
         self.wheel_track = pid_params['wheel_track']
-        #self.wheel_track = self.wheel_track / self.odom_angular_scale_correction
         self.wheel_base = pid_params['wheel_base']
 
         self.encoder_resolution = pid_params['encoder_resolution']
@@ -228,7 +227,7 @@ class BaseController:
             self.enc_Aleft = Aleft_enc
             self.enc_Bright = Bright_enc
             self.enc_Bleft = Bleft_enc
-            
+
             #diff mode
             #dxy_ave = (dright + dleft) / 2.0
             #dth = (dright - dleft) / self.wheel_track / self.odom_angular_scale_correction
@@ -237,8 +236,9 @@ class BaseController:
             
             #maicnu mode
             dx = (dAleft + dAright + dBright + dBleft) / 4.0
-            dy = ((dAright - dBright) + ((dBleft - dAleft)) / 4.0
-            dth = ((dAright - dBleft) + (dBright-dAleft)) / (self.wheel_track + self.wheel_base) / 2
+            dy = ((dAright - dBright) + (dBleft - dAleft)) / 4.0
+            dth = ((dAright - dBleft) + (dBright-dAleft)) / ((self.wheel_track + self.wheel_base) * 2)
+            dth = dth / self.odom_angular_scale_correction
             vx = dx / dt
             vy = dy / dt
             vth = dth / dt
