@@ -224,42 +224,35 @@ class BaseController:
                 dBright = (Bright_enc - self.enc_Bright) / self.ticks_per_meter
                 dBleft = (Bleft_enc - self.enc_Bleft) / self.ticks_per_meter
 
-            #dright=dAright
-            #dleft=dAleft
-
             self.enc_Aright = Aright_enc
             self.enc_Aleft = Aleft_enc
             self.enc_Bright = Bright_enc
             self.enc_Bleft = Bleft_enc
             
+            #diff mode
             #dxy_ave = (dright + dleft) / 2.0
             #dth = (dright - dleft) / self.wheel_track / self.odom_angular_scale_correction
             #vxy = dxy_ave / dt
             #vth = dth / dt
-            dx = (dAleft + dAright) / 2.0
-            dy = (dAright + dBright) / 2.0
-            dxy_ave = (dx ** 2 + dy ** 2) ** 0.5
-            dth = (dAright - dBleft) / (self.wheel_track + self.wheel_base)
+            
+            #maicnu mode
+            dx = (dAleft + dAright + dBright + dBleft) / 4.0
+            dy = ((dAright - dBright) + ((dBleft - dAleft)) / 4.0
+            dth = ((dAright - dBleft) + (dBright-dAleft)) / (self.wheel_track + self.wheel_base) / 2
             vx = dx / dt
             vy = dy / dt
             vth = dth / dt
             
 
-            if (dxy_ave != 0):
-                dx = cos(dth) * dxy_ave
-                dy = -sin(dth) * dxy_ave
-                self.x += (cos(self.th) * dx - sin(self.th) * dy)
-                self.y += (sin(self.th) * dx + cos(self.th) * dy)
-    
-            if (dth != 0):
-                self.th += dth 
+            self.x += (cos(self.th) * dx - sin(self.th) * dy)
+            self.y += (sin(self.th) * dx + cos(self.th) * dy)
+            self.th += dth 
     
             quaternion = Quaternion()
             quaternion.x = 0.0 
             quaternion.y = 0.0
             quaternion.z = sin(self.th / 2.0)
             quaternion.w = cos(self.th / 2.0)
-           # quaternion = createQuaternionMsgFromRollPitchYaw(0,0,self.th)
 
 
     
