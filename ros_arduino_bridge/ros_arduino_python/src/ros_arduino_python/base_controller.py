@@ -40,7 +40,7 @@ class BaseController:
         self.timeout = rospy.get_param("~base_controller_timeout", 0.3)
         self.stopped = False
         self.debugPID=True
-        self.odom_angular_scale_correction=1.06
+        self.odom_angular_scale_correction=1.08
         self.odom_linear_scale_correction = 1.01
  
         pid_params = dict()
