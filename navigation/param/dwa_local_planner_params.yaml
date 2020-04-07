@@ -24,7 +24,7 @@ DWAPlannerROS:
   latch_xy_goal_tolerance: false
 
 # Differential-drive robot configuration
-  holonomic_robot: true
+  holonomic_robot: false
 
 # Forward Simulation Parameters
   sim_time: 3
