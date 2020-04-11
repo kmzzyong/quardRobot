@@ -5,10 +5,23 @@
     <!-- startup mobilebase arduino launch -->
     <include file="$(find ros_arduino_python)/launch/arduino.launch" />
 
+    <!-- startup razor_imu_9dof node -->
+    <include file="$(find razor_imu_9dof)/launch/razor-pub.launch" />
+    <node name="base2imu" pkg="tf" type="static_transform_publisher" args="-0.08 0.04 0.10 0 0 0 1 /base_footprint /imu 50"/>
+   
     <!-- startup rplidar node -->
     <include file="$(find rplidar_ros)/launch/rplidar.launch" />
     <node name="base2laser" pkg="tf" type="static_transform_publisher" args="-0.10 0 0.15 0 0 0 1 /base_footprint /laser 50"/>
    
+    <!-- startup robot_pose_ekf node -->
+    <include file="$(find bringup)/launch/robot_pose_ekf.launch"/>
+
+    <!-- transform between /odom and /odom_combined -->
+    <node pkg="tf" type="static_transform_publisher" name="odom_combined_broadcaster" args="0 0 0 0 0 0 /odom /odom_combined 100" />
+
+    <!-- startup convert /odom_combined to /odom_ekf can view in rviz-->
+    <include file="$(find bringup)/launch/odom_ekf.launch"/>
+
     <!-- startup raspicam node -->
     <include file="$(find raspicam_node)/launch/camerav2_1280x960.launch"/>
 

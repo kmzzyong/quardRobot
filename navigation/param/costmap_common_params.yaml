@@ -5,9 +5,10 @@ footprint: [[-0.14, -0.13], [-0.14, 0.13], [0.14, 0.13], [0.14, -0.13]]
 #robot_radius: 0.15
 footprint_inflation: 0.01
 
+# 膨胀区的半径，以防止接近障碍物。
 inflation_radius: 0.10
-
-cost_scaling_factor: 3.0
+# costmap计算中使用的缩放变量。
+cost_scaling_factor: 0.5
 
 map_type: costmap
 observation_sources: scan
