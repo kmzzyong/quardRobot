@@ -1,7 +1,7 @@
  <launch>
      <!-- startup robot_pose_ekf node -->
     <node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf" output="screen">
-        <param name="output_frame" value="odom_combined"/>
+        <param name="output_frame" value="odom"/>
         <param name="base_footprint_frame" value="base_footprint"/>
         <param name="freq" value="20.0"/>
         <param name="sensor_timeout" value="1.0"/>  
@@ -10,5 +10,7 @@
         <param name="vo_used" value="false"/>
         <param name="debug" value="false"/>
         <remap from="imu_data" to="imu" />
+        <remap from="odom" to="wheel_odom" />
+
 </node>
  </launch>
